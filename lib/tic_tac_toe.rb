@@ -43,7 +43,7 @@ class TicTacToe
   end
 
   def turn
-    puts "Enter the space you'd like to play on:"
+    puts "Please enter a number (1-9):"
     input = gets.strip
     index = input_to_index(input)
     if valid_move?(index)
@@ -61,10 +61,3 @@ class TicTacToe
   end
 
 end
-
-game = TicTacToe.new
-
-game.turn
-game.turn
-game.turn
-game.turn
