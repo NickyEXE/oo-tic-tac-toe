@@ -43,11 +43,11 @@ class TicTacToe
   end
 
   def turn
-    puts "Please enter a number (1-9):"
+    puts "Enter the space you'd like to play on:"
     input = gets.strip
     index = input_to_index(input)
     if valid_move?(index)
-      # make a move, using the index we just got,
+      # make a move, using the in3dex we just got,
       # and the current_player method to figure out whether it's X or O
       move(index, current_player)
     else
@@ -58,6 +58,37 @@ class TicTacToe
       turn
     end
     display_board
+  end
+
+  def won?
+    # go through each potential win condition
+    # check to see if all the spaces that are in that win condition have the same symbol
+      # grab the first space in the win condition and make sure it's not empty
+      # check to see if the second and third spaces in the win condition are the same as the first
+    # return that win condition if the conditions are met
+    WIN_COMBINATIONS.find do |combination|
+      # combination looks like [0, 1, 2]
+      combination_matches?(combination)
+    end
+  end
+
+  def full?
+    turn_count > 8
+  end
+
+  def draw?
+    # returns true if the board is full and nobody has won
+    full? && !won?
+  end
+
+  def over?
+    full? || won?
+  end
+
+  private
+
+  def combination_matches?(combination)
+    position_taken?(combination[0]) && @board[combination[0]] == @board[combination[1]] && @board[combination[0]] == @board[combination[2]]
   end
 
 end
