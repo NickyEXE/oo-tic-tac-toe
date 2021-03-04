@@ -8,13 +8,13 @@ class TicTacToe
     @board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
   end
 
+  # ternary: [condition that returns true or false] ? [something] : [something else]
+  # if condition
+    # something
+  # else
+    # something else
   def play
     turn until over?
-    # ternary: [condition that returns true or false] ? [something] : [something else]
-    # if condition
-      # something
-    # else
-      # something else
     won? ? congratulate : draw
   end
 
