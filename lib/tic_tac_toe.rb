@@ -8,6 +8,34 @@ class TicTacToe
     @board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
   end
 
+  def play
+    turn until over?
+    # ternary: [condition that returns true or false] ? [something] : [something else]
+    # if condition
+      # something
+    # else
+      # something else
+    won? ? congratulate : draw
+  end
+
+  def turn
+    puts "Enter the space you'd like to play on:"
+    input = gets.strip
+    index = input_to_index(input)
+    if valid_move?(index)
+      # make a move, using the in3dex we just got,
+      # and the current_player method to figure out whether it's X or O
+      move(index, current_player)
+    else
+      puts "Invalid move, try again you buffoon it's tic tac toe it's not that hard"
+      # this is recursion. Calling a method inside its own definition is allowed.
+      # If you use recursion, ensure you have a "base case", a conditional that stops it from repeating
+      # Otherwise, you get an infinite loop
+      turn
+    end
+    display_board
+  end
+
   def display_board
     puts " #{@board[0]} | #{@board[1]} | #{@board[2]} "
     puts "-----------"
@@ -42,22 +70,65 @@ class TicTacToe
     turn_count.even? ? "X" : "O"
   end
 
-  def turn
-    puts "Please enter a number (1-9):"
-    input = gets.strip
-    index = input_to_index(input)
-    if valid_move?(index)
-      # make a move, using the index we just got,
-      # and the current_player method to figure out whether it's X or O
-      move(index, current_player)
-    else
-      puts "Invalid move, try again you buffoon it's tic tac toe it's not that hard"
-      # this is recursion. Calling a method inside its own definition is allowed.
-      # If you use recursion, ensure you have a "base case", a conditional that stops it from repeating
-      # Otherwise, you get an infinite loop
-      turn
+  def won?
+    # go through each potential win condition
+    # check to see if all the spaces that are in that win condition have the same symbol
+      # grab the first space in the win condition and make sure it's not empty
+      # check to see if the second and third spaces in the win condition are the same as the first
+    # return that win condition if the conditions are met
+    WIN_COMBINATIONS.find do |combination|
+      # combination looks like [0, 1, 2]
+      combination_matches?(combination)
     end
-    display_board
+  end
+
+  def full?
+    turn_count > 8
+  end
+
+  def draw?
+    # returns true if the board is full and nobody has won
+    full? && !won?
+  end
+
+  def over?
+    draw? || won?
+  end
+
+  def winner
+    # if won?
+    #   # [0, 4, 8]
+    #   winning_combination = won?
+    #   # 0
+    #   first_index_in_winning_combination = won?.first
+    #   # "X"
+    #   player_in_winning_combination = @board[first_index_in_winning_combination]
+    # end
+      # whole code can be written as:
+      @board[won?.first] if won?
+  end
+
+  # until the game is over
+  #   take turns
+  # end
+  # if the game was won
+  #   congratulate the winner
+  # else if the game was a draw
+  #   tell the players it ended in a draw
+  # end
+
+  private
+
+  def congratulate
+    puts "Congratulations #{winner}!"
+  end
+
+  def draw
+    puts "Cat's Game!"
+  end
+
+  def combination_matches?(combination)
+    position_taken?(combination[0]) && @board[combination[0]] == @board[combination[1]] && @board[combination[0]] == @board[combination[2]]
   end
 
 end
